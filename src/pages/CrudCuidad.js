@@ -13,7 +13,7 @@ import { InputNumber } from "primereact/inputnumber";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { ProductService } from "../service/ProductService";
-import { CiudadService } from "../service/CiudadService";
+import { ProductosService } from "../service/CiudadService";
 
 const CrudCiudad = () => {
     let emptyCiudad = {
@@ -37,7 +37,7 @@ const CrudCiudad = () => {
     const dt = useRef(null);
 
     useEffect(() => {
-        const ciudadService = new CiudadService();
+        const ciudadService = new ProductosService();
         ciudadService.getCiudades().then((data) => setCiudades(data));
     }, []);
 
@@ -85,7 +85,7 @@ const CrudCiudad = () => {
                 const index = findIndexById(ciudad.id);
 
                 _products[index] = _product;
-                const ciudserv = new CiudadService();
+                const ciudserv = new ProductosService();
                 ciudserv.putCiudades(_product)
                 toast.current.show({
                     severity: "success",
@@ -94,7 +94,7 @@ const CrudCiudad = () => {
                     life: 3000,
                 });
             } else {
-                const ciudserv = new CiudadService();
+                const ciudserv = new ProductosService();
                 ciudserv.postCiudades(_product)
                 console.log(_product)
                 // _product.id = createId();
@@ -129,7 +129,7 @@ const CrudCiudad = () => {
         setCiudades(_products);
         setDeleteProductDialog(false);
         setProduct(emptyCiudad);
-        const ciudserv = new CiudadService();
+        const ciudserv = new ProductosService();
         ciudserv.deleteCiudades(ciudad.id);
         toast.current.show({
             severity: "success",

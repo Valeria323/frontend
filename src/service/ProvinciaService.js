@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export class ProvinciaService {    
+export class ProductoService {    
 
     getProvincias (){
         return axios.get('http://localhost:9090/api/v1.0/provincia').then(res => res.data.result);

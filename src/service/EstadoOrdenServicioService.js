@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export class EstadoOrdenServicioService {    
+export class ProductoService {    
     getEstadoOrdenServicio (){
         return axios.get('http://localhost:9090/api/v1.0/estadoordenservicio').then(res => res.data.result);
     }

@@ -4,30 +4,36 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
+import { FileUpload } from "primereact/fileupload";
+import { Rating } from "primereact/rating";
 import { Toolbar } from "primereact/toolbar";
+import { InputTextarea } from "primereact/inputtextarea";
+import { RadioButton } from "primereact/radiobutton";
+import { InputNumber } from "primereact/inputnumber";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import { ClienteService as ClienteService } from "../service/ClienteService";
+import { ProductService } from "../service/ProductService";
+import { ClienteService as ClienteService } from "../service/ClienteService"
 
 const CrudCliente = () => {
     let emptyCliente = {
         id: null,
-        nombres:"",
+        nombres: "",
         apellidos: "",
-        dni:"", 
-        direccion:"",
-        telefono:"",
-        celular:"",
-        email:"",
-        estado:"",
+        dni: "",
+        direccion: "",
+        telefono: "",
+        celular: "",
+        email: "",
+        estado: "",
     };
 
-    
     const [clientes, setClientes] = useState(null);
     const [clienteDialog, setClienteDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
     const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
-    const [cliente, setCliente] = useState(emptyCliente);
+    const [cliente, setCliente] = useState(emptyCliente
+);
     const [selectedClientes, setSelectedClientes] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
@@ -47,7 +53,8 @@ const CrudCliente = () => {
     };
 
     const openNew = () => {
-        setCliente(emptyCliente);
+        setCliente(emptyCliente
+    );
         setSubmitted(false);
         setClienteDialog(true);
     };
@@ -100,7 +107,8 @@ const CrudCliente = () => {
 
             setClientes(_products);
             setClienteDialog(false);
-            setCliente(emptyCliente);
+            setCliente(emptyCliente
+        );
         }
     };
 
@@ -118,13 +126,14 @@ const CrudCliente = () => {
         let _products = clientes.filter((val) => val.id !== cliente.id);
         setClientes(_products);
         setDeleteProductDialog(false);
-        setCliente(emptyCliente);
+        setCliente(emptyCliente
+    );
         const provserv = new ClienteService();
         provserv.deleteClientes(cliente.id);
         toast.current.show({
             severity: "success",
             summary: "Successful",
-            detail: "Cliente eliminada",
+            detail: "cliente eliminada",
             life: 3000,
         });
     };
@@ -206,6 +215,7 @@ const CrudCliente = () => {
     const rightToolbarTemplate = () => {
         return (
             <React.Fragment>
+                <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} label="Import" chooseLabel="Import" className="mr-2 inline-block" />
                 <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
             </React.Fragment>
         );
@@ -228,52 +238,57 @@ const CrudCliente = () => {
             </>
         );
     };
+
     const apellidosBodyTemplate = (rowData) => {
         return (
             <>
                 <span className="p-column-title">Apellidos</span>
-                {rowData.id}
+                {rowData.nombre}
             </>
         );
     };
+
     const dniBodyTemplate = (rowData) => {
         return (
             <>
                 <span className="p-column-title">Dni</span>
-                {rowData.id}
+                {rowData.nombre}
             </>
         );
     };
+
     const direccionBodyTemplate = (rowData) => {
         return (
             <>
                 <span className="p-column-title">Direccion</span>
-                {rowData.id}
+                {rowData.nombre}
             </>
         );
     };
+
     const telefonoBodyTemplate = (rowData) => {
         return (
             <>
                 <span className="p-column-title">Telefono</span>
-                {rowData.id}
+                {rowData.nombre}
             </>
         );
     };
+
     const celularBodyTemplate = (rowData) => {
         return (
             <>
                 <span className="p-column-title">Celular</span>
-                {rowData.id}
+                {rowData.nombre}
             </>
         );
     };
-  
+
     const emailBodyTemplate = (rowData) => {
         return (
             <>
                 <span className="p-column-title">Email</span>
-                {rowData.id}
+                {rowData.nombre}
             </>
         );
     };
@@ -281,10 +296,11 @@ const CrudCliente = () => {
         return (
             <>
                 <span className="p-column-title">Estado</span>
-                {rowData.id}
+                {rowData.nombre}
             </>
         );
     };
+
     const imageBodyTemplate = (rowData) => {
         return (
             <>
@@ -316,6 +332,7 @@ const CrudCliente = () => {
         return (
             <>
                 <span className="p-column-title">Reviews</span>
+                <Rating value={rowData.rating} readonly cancel={false} />
             </>
         );
     };
@@ -386,7 +403,7 @@ const CrudCliente = () => {
                         className="datatable-responsive"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
                         globalFilter={globalFilter}
-                        emptyMessage="No existen clientes registradas."
+                        emptyMessage="No existen provincias registradas."
                         header={header}
                         responsiveLayout="scroll"
                     >
@@ -403,7 +420,7 @@ const CrudCliente = () => {
                         <Column body={actionBodyTemplate}></Column>
                     </DataTable>
 
-                    <Dialog visible={clienteDialog} style={{ width: "450px" }} header="Cliente" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
+                    <Dialog visible={clienteDialog} style={{ width: "450px" }} header="Provincia" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
                         <div className="field">
                             <label htmlFor="name">Nombres</label>
                             <InputText
@@ -416,7 +433,90 @@ const CrudCliente = () => {
                                     "p-invalid": submitted && !cliente.nombres,
                                 })}
                             />
-                            {submitted && !cliente.nombres && <small className="p-invalid">El nombre del clieinte es necesario.</small>}
+
+                        <label htmlFor="name">Apellidos</label>
+                            <InputText
+                                id="apellidos"
+                                value={cliente.apellidos}
+                                onChange={(e) => onInputChange(e, "apellidos")}
+                                required
+                                autoFocus
+                                className={classNames({
+                                    "p-invalid": submitted && !cliente.apellidos,
+                                })}
+                            />
+
+                        <label htmlFor="name">Dni</label>
+                            <InputText
+                                id="dni"
+                                value={cliente.dni}
+                                onChange={(e) => onInputChange(e, "dni")}
+                                required
+                                autoFocus
+                                className={classNames({
+                                    "p-invalid": submitted && !cliente.dni,
+                                })}
+                            />
+
+                        <label htmlFor="name">Direccion</label>
+                            <InputText
+                                id="direccion"
+                                value={cliente.direccion}
+                                onChange={(e) => onInputChange(e, "direccion")}
+                                required
+                                autoFocus
+                                className={classNames({
+                                    "p-invalid": submitted && !cliente.direccion,
+                                })}
+                            />
+
+                        <label htmlFor="name">telefono</label>
+                            <InputText
+                                id="telefono"
+                                value={cliente.telefono}
+                                onChange={(e) => onInputChange(e, "telefono")}
+                                required
+                                autoFocus
+                                className={classNames({
+                                    "p-invalid": submitted && !cliente.telefono,
+                                })}
+                            />
+
+                        <label htmlFor="name">Celular</label>
+                            <InputText
+                                id="celular"
+                                value={cliente.celular}
+                                onChange={(e) => onInputChange(e, "celular")}
+                                required
+                                autoFocus
+                                className={classNames({
+                                    "p-invalid": submitted && !cliente.celular,
+                                })}
+                            />
+
+                        <label htmlFor="name">Email</label>
+                            <InputText
+                                id="email"
+                                value={cliente.email}
+                                onChange={(e) => onInputChange(e, "email")}
+                                required
+                                autoFocus
+                                className={classNames({
+                                    "p-invalid": submitted && !cliente.email,
+                                })}
+                            />
+                            <label htmlFor="name">Estado</label>
+                            <InputText
+                                id="estado"
+                                value={cliente.estado}
+                                onChange={(e) => onInputChange(e, "estado")}
+                                required
+                                autoFocus
+                                className={classNames({
+                                    "p-invalid": submitted && !cliente.estado,
+                                })}
+                            />
+                            {submitted && !cliente.nombre && <small className="p-invalid">El nombre del cliente es necesario.</small>}
                         </div>
                     </Dialog>
 
@@ -425,7 +525,7 @@ const CrudCliente = () => {
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: "2rem" }} />
                             {cliente && (
                                 <span>
-                                    Está seguro de borrar el cliente <b>{cliente.nombres}</b>?
+                                    Está seguro de borrar al cliente <b>{cliente.nombre}</b>?
                                 </span>
                             )}
                         </div>
@@ -434,7 +534,7 @@ const CrudCliente = () => {
                     <Dialog visible={deleteProductsDialog} style={{ width: "450px" }} header="Confirm" modal footer={deleteProductsDialogFooter} onHide={hideDeleteProductsDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: "2rem" }} />
-                            {cliente && <span>Está seguro de borrar este cliente?</span>}
+                            {cliente && <span>Está seguro de borrar estos clientes?</span>}
                         </div>
                     </Dialog>
                 </div>

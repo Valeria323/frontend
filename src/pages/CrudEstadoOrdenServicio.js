@@ -7,7 +7,7 @@ import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import { EstadoOrdenServicioService as EstadoOrdenServicioService } from "../service/EstadoOrdenServicioService";
+import { ProductoService as ProductoService } from "../service/EstadoOrdenServicioService";
 
 const CrudEstadoOrdenServicio = () => {
     let emptyEstadoOrdenServicio = {
@@ -32,7 +32,7 @@ const CrudEstadoOrdenServicio = () => {
     const dt = useRef(null);
 
     useEffect(() => {
-        const estadoordenservicioService = new EstadoOrdenServicioService();
+        const estadoordenservicioService = new ProductoService();
         estadoordenservicioService.getEstadoOrdenServicio().then((data) => setEstadoOrdenServicios(data));
     }, []);
 
@@ -73,7 +73,7 @@ const CrudEstadoOrdenServicio = () => {
 
                 _products[index] = _product;
 
-                const provserv = new EstadoOrdenServicioService();
+                const provserv = new ProductoService();
                 provserv.putEstadoOrdenServicios(_product)
                 toast.current.show({
                     severity: "success",
@@ -82,7 +82,7 @@ const CrudEstadoOrdenServicio = () => {
                     life: 3000,
                 });
             } else {
-                const provserv = new EstadoOrdenServicioService();
+                const provserv = new ProductoService();
                 provserv.postEstadoOrdenServicio(_product)
                 // _product.id = createId();
                 // _product.image = "product-placeholder.svg";
@@ -116,7 +116,7 @@ const CrudEstadoOrdenServicio = () => {
         setEstadoOrdenServicios(_products);
         setDeleteProductDialog(false);
         setEstadoOrdenServicio(emptyEstadoOrdenServicio);
-        const provserv = new EstadoOrdenServicioService();
+        const provserv = new ProductoService();
         provserv.deleteEstadoOrdenServicio(estadoordenservicio.id);
         toast.current.show({
             severity: "success",

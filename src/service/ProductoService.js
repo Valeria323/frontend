@@ -1,16 +1,16 @@
 import axios from 'axios';
 
-export class ProductoService {    
-    getProducto (){
+export class EquipoService {    
+    getProductos (){
         return axios.get('http://localhost:9090/api/v1.0/producto').then(res => res.data.result);
     }
-    postProducto (produc){
-        return axios.post('http://localhost:9090/api/v1.0/producto',produc)
+    postProductos (product){
+        return axios.post('http://localhost:9090/api/v1.0/producto',product)
     }
-    putProducto (produ){
-        return axios.put('http://localhost:9090/api/v1.0/producto',produ)
+    putProductos (produc){
+        return axios.put('http://localhost:9090/api/v1.0/producto',produc)
     }
-    deleteProducto (id){
+    deleteProductos (id){
         return axios.delete('http://localhost:9090/api/v1.0/producto/' +id)
     }
 }

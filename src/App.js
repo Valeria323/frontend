@@ -13,6 +13,7 @@ import Dashboard from './components/Dashboard';
 import Crud from './pages/Crud';
 import CrudCuidad from './pages/CrudCuidad'
 import CrudCliente from './pages/CrudCliente';
+import CrudEquipo from './pages/CrudEquipo';
 import CrudEstadoOrdenServicio from './pages/CrudEstadoOrdenServicio';
 
 import PrimeReact from 'primereact/api';
@@ -26,6 +27,7 @@ import './assets/demo/flags/flags.css';
 import './assets/demo/Demos.scss';
 import './assets/layout/layout.scss';
 import './App.scss';
+
 
 const App = () => {
     const [layoutMode, setLayoutMode] = useState('static');
@@ -151,7 +153,7 @@ const App = () => {
                 { label: 'Ciudad', icon: 'pi pi-fw pi-user-edit', to: '/crud-cuidad' },
                 { label: 'Cliente', icon: 'pi pi-fw pi-user-edit', to: '/crud-cliente' },
                 { label: 'EstadoOrdenServicio', icon: 'pi pi-fw pi-user-edit', to: '/crud-estadoordenservicio' },
-                { label: 'Producto', icon: 'pi pi-fw pi-user-edit', to: '/crud-producto' },
+                { label: 'Equipo', icon: 'pi pi-fw pi-user-edit', to: '/crud-equipo' },
             ]
         },
             ];
@@ -197,7 +199,9 @@ const App = () => {
                     <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
                     <Route path="/crud-provincia" component={Crud} />
                     <Route path="/crud-cuidad" component={CrudCuidad} />
-                    <Route path="/crud-cliente" component={CrudCliente} />
+                    <Route path="/crud-cliente" component={CrudCliente} />      
+                            <Route path="/crud-equipo" component={CrudEquipo} />
+
                     <Route path="/crud-estadoordenservicio" component={CrudEstadoOrdenServicio} />
                 
                 </div>

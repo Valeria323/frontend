@@ -13,39 +13,37 @@ import { InputNumber } from "primereact/inputnumber";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { ProductService } from "../service/ProductService";
-import { ProductosService as ProductosService } from "../service/ProductosService"
+import { EquipoService } from "../service/EquipoService"
 
-const CrudProductos = () => {
-    let emptyProductos = {
+const CrudEquipos = () => {
+    let emptyEquipos = {
         id: null,
         codigo: "",
         nombre: "",
-        precioVenta: "",
+        precioventa: "",
         stockMin: "",
         stockMax: "",
         stock: "",
         controlaStock: "",
         aplicaIva: "",
-        empresa:{
-            id:"",
-            nombre: "",
-        }
+        empresa: "",
     };
 
-    const [productos, setProductos] = useState(null);
-    const [productoDialog, setProductoDialog] = useState(false);
-    const [deleteProductDialog, setDeleteProductDialog] = useState(false);
-    const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
-    const [producto, setProducto] = useState(emptyProductos);
-    const [selectedProductos, setSelectedProductos] = useState(null);
+    const [equipos, setEquipos] = useState(null);
+    const [equipoDialog, setEquipoDialog] = useState(false);
+    const [deleteEquipoDialog, setDeleteEquipoDialog] = useState(false);
+    const [deleteEquiposDialog, setDeleteEquiposDialog] = useState(false);
+    const [equipo, setEquipo] = useState(emptyEquipos
+);
+    const [selectedEquipos, setSelectedEquipos] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
     const toast = useRef(null);
     const dt = useRef(null);
 
     useEffect(() => {
-        const productoService = new ProductosService();
-        productoService.getProductos().then((data) => setProductos(data));
+        const equipoService = new EquipoService();
+        equipoService.getEquipos().then((data) => setEquipos(data));
     }, []);
 
     const formatCurrency = (value) => {
@@ -56,92 +54,95 @@ const CrudProductos = () => {
     };
 
     const openNew = () => {
-        setProducto(emptyProductos);
+        setEquipo(emptyEquipos
+    );
         setSubmitted(false);
-        setProductoDialog(true);
+        setEquipoDialog(true);
     };
 
     const hideDialog = () => {
         setSubmitted(false);
-        setProductoDialog(false);
+        setEquipoDialog(false);
     };
 
     const hideDeleteProductDialog = () => {
-        setDeleteProductDialog(false);
+        setDeleteEquipoDialog(false);
     };
 
     const hideDeleteProductsDialog = () => {
-        setDeleteProductsDialog(false);
+        setDeleteEquiposDialog(false);
     };
 
     const saveProduct = () => {
         setSubmitted(true);
 
-        if (producto.nombres.trim()) {
-            let _products = [...productos];
-            let _product = { ...producto };
-            if (producto.id) {
-                const index = findIndexById(producto.id);
+        if (equipo.nombre.trim()) {
+            let _products = [...equipos];
+            let _product = { ...equipo };
+            if (equipo.id) {
+                const index = findIndexById(equipo.id);
 
                 _products[index] = _product;
 
-                const provserv = new ProductosService();
-                provserv.putClientes(_product)
+                const provserv = new EquipoService();
+                provserv.putEquipos(_product)
                 toast.current.show({
                     severity: "success",
                     summary: "Successful",
-                    detail: "Cliente actualizado",
+                    detail: "Equipo actualizado",
                     life: 3000,
                 });
             } else {
-                const provserv = new ProductosService();
-                provserv.postClientes(_product)
+                const provserv = new EquipoService();
+                provserv.postEquipos(_product)
                 // _product.id = createId();
                 // _product.image = "product-placeholder.svg";
                 // _products.push(_product);
                 toast.current.show({
                     severity: "success",
                     summary: "Successful",
-                    detail: "Cliente creado",
+                    detail: "Equipo creado",
                     life: 3000,
                 });
             }
 
-            setProductos(_products);
-            setProductoDialog(false);
-            setProducto(emptyProductos);
+            setEquipos(_products);
+            setEquipoDialog(false);
+            setEquipo(emptyEquipos
+        );
         }
     };
 
     const editProduct = (product) => {
-        setProducto({ ...product });
-        setProductoDialog(true);
+        setEquipo({ ...product });
+        setEquipoDialog(true);
     };
 
     const confirmDeleteProduct = (product) => {
-        setProducto(product);
-        setDeleteProductDialog(true);
+        setEquipo(product);
+        setDeleteEquipoDialog(true);
     };
 
     const deleteProduct = () => {
-        let _products = productos.filter((val) => val.id !== producto.id);
-        setProductos(_products);
-        setDeleteProductDialog(false);
-        setProducto(emptyProductos);
-        const provserv = new ProductosService();
-        provserv.deleteClientes(producto.id);
+        let _products = equipos.filter((val) => val.id !== equipo.id);
+        setEquipos(_products);
+        setDeleteEquipoDialog(false);
+        setEquipo(emptyEquipos
+    );
+        const provserv = new EquipoService();
+        provserv.deleteEquipos(equipo.id);
         toast.current.show({
             severity: "success",
             summary: "Successful",
-            detail: "Cliente eliminado",
+            detail: "Equipo eliminado",
             life: 3000,
         });
     };
 
     const findIndexById = (id) => {
         let index = -1;
-        for (let i = 0; i < productos.length; i++) {
-            if (productos[i].id === id) {
+        for (let i = 0; i < equipos.length; i++) {
+            if (equipos[i].id === id) {
                 index = i;
                 break;
             }
@@ -164,42 +165,42 @@ const CrudProductos = () => {
     };
 
     const confirmDeleteSelected = () => {
-        setDeleteProductsDialog(true);
+        setDeleteEquiposDialog(true);
     };
 
     const deleteSelectedProducts = () => {
-        let _products = productos.filter((val) => !selectedProductos.includes(val));
-        setProductos(_products);
-        setDeleteProductsDialog(false);
-        setSelectedProductos(null);
+        let _products = equipos.filter((val) => !selectedEquipos.includes(val));
+        setEquipos(_products);
+        setDeleteEquiposDialog(false);
+        setSelectedEquipos(null);
         toast.current.show({
             severity: "success",
             summary: "Successful",
-            detail: "Clientes eliminados",
+            detail: "Equipos eliminados",
             life: 3000,
         });
     };
 
     const onCategoryChange = (e) => {
-        let _product = { ...producto };
+        let _product = { ...equipo };
         _product["category"] = e.value;
-        setProducto(_product);
+        setEquipo(_product);
     };
 
-    const onInputChange = (e, name) => {
+    const onInputChange = (e, nombre) => {
         const val = (e.target && e.target.value) || "";
-        let _product = { ...producto };
-        _product[`${name}`] = val;
+        let _product = { ...equipo };
+        _product[`${nombre}`] = val;
 
-        setProducto(_product);
+        setEquipo(_product);
     };
 
     const onInputNumberChange = (e, nombre) => {
         const val = e.value || 0;
-        let _product = { ...producto };
+        let _product = { ...equipo };
         _product[`${nombre}`] = val;
 
-        setProducto(_product);
+        setEquipo(_product);
     };
 
     const leftToolbarTemplate = () => {
@@ -230,74 +231,85 @@ const CrudProductos = () => {
         );
     };
 
-    const nombresBodyTemplate = (rowData) => {
+    const codigoBodyTemplate = (rowData) => {
         return (
             <>
-                <span className="p-column-title">Nombres</span>
+                <span className="p-column-title">Codigo</span>
                 {rowData.nombre}
             </>
         );
     };
 
-    const apellidosBodyTemplate = (rowData) => {
+    const nombreBodyTemplate = (rowData) => {
         return (
             <>
-                <span className="p-column-title">Apellidos</span>
+                <span className="p-column-title">Nombre</span>
                 {rowData.nombre}
             </>
         );
     };
 
-    const dniBodyTemplate = (rowData) => {
+    const precioVentaBodyTemplate = (rowData) => {
         return (
             <>
-                <span className="p-column-title">Dni</span>
-                {rowData.nombre}
+                <span className="p-column-title">Precio Venta</span>
+                {rowData.precioVenta}
             </>
         );
     };
 
-    const direccionBodyTemplate = (rowData) => {
+    const stockMinBodyTemplate = (rowData) => {
         return (
             <>
-                <span className="p-column-title">Direccion</span>
-                {rowData.nombre}
+                <span className="p-column-title">Stock Minimo</span>
+                {rowData.stockMin}
             </>
         );
     };
 
-    const telefonoBodyTemplate = (rowData) => {
+    const stockMaxBodyTemplate = (rowData) => {
         return (
             <>
-                <span className="p-column-title">Telefono</span>
-                {rowData.nombre}
+                <span className="p-column-title">Stock Maximo</span>
+                {rowData.stockMax}
             </>
         );
     };
-    const celularBodyTemplate = (rowData) => {
+
+    const stockBodyTemplate = (rowData) => {
         return (
             <>
-                <span className="p-column-title">Celular</span>
-                {rowData.nombre}
+                <span className="p-column-title">Stock</span>
+                {rowData.stock}
             </>
         );
     };
-    const emailBodyTemplate = (rowData) => {
+
+    const controlaStockBodyTemplate = (rowData) => {
         return (
             <>
-                <span className="p-column-title">Email</span>
-                {rowData.nombre}
+                <span className="p-column-title">Controla Stock</span>
+                {rowData.controlaStock}
             </>
         );
     };
-    const estadoBodyTemplate = (rowData) => {
+    const aplicaIvaBodyTemplate = (rowData) => {
         return (
             <>
-                <span className="p-column-title">Estado</span>
-                {rowData.nombre}
+                <span className="p-column-title">Aplica Iva</span>
+                {rowData.aplicaIva}
             </>
         );
     };
+
+    const empresaBodyTemplate = (rowData) => {
+        return(
+            <>
+            <span className="p-column-title">Nombre Empresa</span>
+                {rowData.empresa.nombre}
+            </>
+        )
+    }
 
     const imageBodyTemplate = (rowData) => {
         return (
@@ -355,10 +367,10 @@ const CrudProductos = () => {
 
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Clientes</h5>
+            <h5 className="m-0">Equipos</h5>
             <span className="block mt-2 md:mt-0 p-input-icon-left">
                 <i className="pi pi-search" />
-                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
+                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
             </span>
         </div>
     );
@@ -391,9 +403,9 @@ const CrudProductos = () => {
 
                     <DataTable
                         ref={dt}
-                        value={productos}
-                        selection={selectedProductos}
-                        onSelectionChange={(e) => setSelectedProductos(e.value)}
+                        value={equipos}
+                        selection={selectedEquipos}
+                        onSelectionChange={(e) => setSelectedEquipos(e.value)}
                         dataKey="id"
                         paginator
                         rows={10}
@@ -401,137 +413,139 @@ const CrudProductos = () => {
                         className="datatable-responsive"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
                         globalFilter={globalFilter}
-                        emptyMessage="No existen clientes registrados."
+                        emptyMessage="No existen equipos registrados."
                         header={header}
                         responsiveLayout="scroll"
                     >
                         <Column selectionMode="multiple" headerStyle={{ width: "3rem" }}></Column>
                         <Column field="id" header="Id" body={idBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
-                        <Column field="nombres" header="Nombres" body={nombresBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
-                        <Column field="apellidos" header="Apellidos" body={apellidosBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
-                        <Column field="dni" header="Dni" body={dniBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
-                        <Column field="direccion" header="Direccion" body={direccionBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
-                        <Column field="telefono" header="Telefono" body={telefonoBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
-                        <Column field="celular" header="Celular" body={celularBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
-                        <Column field="email" header="Email" body={emailBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
-                        <Column field="estado" header="Estado" body={estadoBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
+                        <Column field="codigo" header="Codigo" body={codigoBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
+                        <Column field="nombre" header="Nombre" body={nombreBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
+                        <Column field="precioVenta" header="Precio Venta" body={precioVentaBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
+                        <Column field="stockMin" header="Stock Minimo" body={stockMinBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
+                        <Column field="stockMax" header="stock Maximo" body={stockMaxBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
+                        <Column field="stock" header="Stock" body={stockBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
+                        <Column field="controlaStock" header="Controla Stock" body={controlaStockBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
+                        <Column field="aplicaIva" header="Aplica Iva" body={aplicaIvaBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
+                        <Column field="empresa" header="Empresa" body={empresaBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
                         <Column body={actionBodyTemplate}></Column>
                     </DataTable>
 
-                    <Dialog visible={productoDialog} style={{ width: "450px" }} header="Cliente" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
+                    <Dialog visible={equipoDialog} style={{ width: "450px" }} header="Equipo" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
                         <div className="field">
-                            <label htmlFor="name">Nombres</label>
+                            <label htmlFor="name">Codigo</label>
                             <InputText
-                                id="nombres"
-                                value={producto.nombres}
-                                onChange={(e) => onInputChange(e, "nombres")}
+                                id="codigo"
+                                value={equipo.codigo}
+                                onChange={(e) => onInputChange(e, "codigo")}
                                 required
                                 autoFocus
                                 className={classNames({
-                                    "p-invalid": submitted && !producto.nombres,
+                                    "p-invalid": submitted && !equipo.codigo,
                                 })}
                             />
-                            <label htmlFor="name">Apellidos</label>
+
+                        <label htmlFor="name">Nombre</label>
                             <InputText
-                                id="apellidos"
-                                value={producto.apellidos}
-                                onChange={(e) => onInputChange(e, "apellidos")}
+                                id="nombre"
+                                value={equipo.nombre}
+                                onChange={(e) => onInputChange(e, "nombre")}
                                 required
                                 autoFocus
                                 className={classNames({
-                                    "p-invalid": submitted && !producto.apellidos,
+                                    "p-invalid": submitted && !equipo.nombre,
                                 })}
                             />
-                            <label htmlFor="name">Dni</label>
+
+                        <label htmlFor="name">Precio Venta</label>
                             <InputText
-                                id="dni"
-                                value={producto.dni}
-                                onChange={(e) => onInputChange(e, "dni")}
+                                id="precioVenta"
+                                value={equipo.precioVenta}
+                                onChange={(e) => onInputChange(e, "precioVenta")}
                                 required
                                 autoFocus
                                 className={classNames({
-                                    "p-invalid": submitted && !producto.dni,
+                                    "p-invalid": submitted && !equipo.precioVenta,
                                 })}
                             />
-                            <label htmlFor="name">Direccion</label>
+
+                        <label htmlFor="name">Stock Minimo</label>
                             <InputText
-                                id="direccion"
-                                value={producto.direccion}
-                                onChange={(e) => onInputChange(e, "direccion")}
+                                id="stockMin"
+                                value={equipo.stockMin}
+                                onChange={(e) => onInputChange(e, "stockMin")}
                                 required
                                 autoFocus
                                 className={classNames({
-                                    "p-invalid": submitted && !producto.direccion,
+                                    "p-invalid": submitted && !equipo.stockMin,
                                 })}
                             />
-                            
-                            <label htmlFor="name">Telefono</label>
+
+                        <label htmlFor="name">Stock Maximo</label>
                             <InputText
-                                id="telefono"
-                                value={producto.telefono}
-                                onChange={(e) => onInputChange(e, "telefono")}
+                                id="stockMax"
+                                value={equipo.stockMax}
+                                onChange={(e) => onInputChange(e, "stockMax")}
                                 required
                                 autoFocus
                                 className={classNames({
-                                    "p-invalid": submitted && !producto.telefono,
+                                    "p-invalid": submitted && !equipo.stockMax,
                                 })}
                             />
-                            
-                            <label htmlFor="name">Celular</label>
+
+                        <label htmlFor="name">Stock</label>
                             <InputText
-                                id="celular"
-                                value={producto.celular}
-                                onChange={(e) => onInputChange(e, "celular")}
+                                id="stock"
+                                value={equipo.stock}
+                                onChange={(e) => onInputChange(e, "stock")}
                                 required
                                 autoFocus
                                 className={classNames({
-                                    "p-invalid": submitted && !producto.celular,
+                                    "p-invalid": submitted && !equipo.stock,
                                 })}
                             />
-                            
-                            <label htmlFor="name">Email</label>
+
+                        <label htmlFor="name">Controla Stock</label>
                             <InputText
-                                id="email"
-                                value={producto.email}
-                                onChange={(e) => onInputChange(e, "email")}
+                                id="controlaStock"
+                                value={equipo.controlaStock}
+                                onChange={(e) => onInputChange(e, "controla Stock")}
                                 required
                                 autoFocus
                                 className={classNames({
-                                    "p-invalid": submitted && !producto.email,
+                                    "p-invalid": submitted && !equipo.controlaStock,
                                 })}
                             />
-                            
-                            <label htmlFor="name">Estado</label>
+                            <label htmlFor="name">Aplica Iva</label>
                             <InputText
-                                id="estado"
-                                value={producto.estado}
-                                onChange={(e) => onInputChange(e, "estado")}
+                                id="aplicaIva"
+                                value={equipo.aplicaIva}
+                                onChange={(e) => onInputChange(e, "aplicaIva")}
                                 required
                                 autoFocus
                                 className={classNames({
-                                    "p-invalid": submitted && !producto.estado,
+                                    "p-invalid": submitted && !equipo.aplicaIva,
                                 })}
                             />
-                            
-                            {submitted && !producto.nombres && <small className="p-invalid">Los datos del cliente son necesario.</small>}
+                            {submitted && !equipo.nombre && <small className="p-invalid">El nombre del equipo es necesario.</small>}
                         </div>
                     </Dialog>
 
-                    <Dialog visible={deleteProductDialog} style={{ width: "450px" }} header="Confirmación" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
+                    <Dialog visible={deleteEquipoDialog} style={{ width: "450px" }} header="Confirmación" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: "2rem" }} />
-                            {producto && (
+                            {equipo && (
                                 <span>
-                                    Está seguro de borrar el cliente <b>{producto.nombres}</b>?
+                                    Está seguro de borrar al equipo <b>{equipo.nombre}</b>?
                                 </span>
                             )}
                         </div>
                     </Dialog>
 
-                    <Dialog visible={deleteProductsDialog} style={{ width: "450px" }} header="Confirm" modal footer={deleteProductsDialogFooter} onHide={hideDeleteProductsDialog}>
+                    <Dialog visible={deleteEquiposDialog} style={{ width: "450px" }} header="Confirm" modal footer={deleteProductsDialogFooter} onHide={hideDeleteProductsDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: "2rem" }} />
-                            {producto && <span>Está seguro de borrar estos clientes?</span>}
+                            {equipo && <span>Está seguro de borrar estos equipos?</span>}
                         </div>
                     </Dialog>
                 </div>
@@ -544,4 +558,4 @@ const comparisonFn = function (prevProps, nextProps) {
     return prevProps.location.pathname === nextProps.location.pathname;
 };
 
-export default React.memo(CrudProductos, comparisonFn);
+export default React.memo(CrudEquipos, comparisonFn);
