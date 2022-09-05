@@ -28,7 +28,6 @@ import './assets/demo/Demos.scss';
 import './assets/layout/layout.scss';
 import './App.scss';
 
-
 const App = () => {
     const [layoutMode, setLayoutMode] = useState('static');
     const [layoutColorMode, setLayoutColorMode] = useState('light')
@@ -199,7 +198,7 @@ const App = () => {
                     <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
                     <Route path="/crud-provincia" component={Crud} />
                     <Route path="/crud-cuidad" component={CrudCuidad} />
-                    <Route path="/crud-cliente" component={CrudCliente} />      
+                    <Route path="/crud-cliente" component={CrudCliente} />   
                             <Route path="/crud-equipo" component={CrudEquipo} />
 
                     <Route path="/crud-estadoordenservicio" component={CrudEstadoOrdenServicio} />

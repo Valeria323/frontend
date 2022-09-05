@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export class ProductosService {    
+export class CiudadService {    
     getCiudades (){
         return axios.get('http://localhost:9090/api/v1.0/ciudad').then(res => res.data.result);
     }
