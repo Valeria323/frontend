@@ -36,7 +36,6 @@ const CrudCliente = () => {
     const toast = useRef(null);
     const dt = useRef(null);
 
-
     useEffect(() => {
         // const provinciaService = new ProvinciaService();
         // provinciaService.getProvincias().then((data) => setProvincias(data));
@@ -44,9 +43,7 @@ const CrudCliente = () => {
         clienteService.getClientes().then((data) => setClientes(data));
       }, []);
 
-   
-
-      const openNew = () => {
+         const openNew = () => {
         setCliente(clienteVacio);
         setSubmitted(false);
         setClienteDialog(true);
@@ -65,7 +62,6 @@ const CrudCliente = () => {
         setDeleteClientesDialog(false);
       };
     
-
       const saveCliente = () => {
         setSubmitted(true);
         if (cliente.nombres.trim()) {
@@ -289,7 +285,6 @@ const CrudCliente = () => {
       </div>
     );
   };
-
 
   const header = (
     <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
